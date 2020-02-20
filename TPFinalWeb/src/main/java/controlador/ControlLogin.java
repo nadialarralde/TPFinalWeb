@@ -102,14 +102,14 @@ public class ControlLogin {
     //validate login
   	public String validarLoginAdministrador(String usuario, String clave) {
   		boolean valid = false;
-                Empleado empleado=null;
+                Empleado empleadoSesion=null;
   		HttpSession session = null;
-  		for (Empleado e : this.controlSistema.getmSistema().getEmpleados()) {
-  			if (e.getUsuario().equalsIgnoreCase(usuario)) {
-  				if (!e.getContraseña().equalsIgnoreCase(clave)) {
+  		for (Empleado empleado : this.controlSistema.getmSistema().getEmpleados()) {
+  			if (empleado.getUsuario().equals(usuario)) {
+  				if (!empleado.getContraseña().equals(clave)) {
   					break;
   				}
-                                empleado=e;
+                                empleadoSesion=empleado;
   				session = getSession();
   				valid = true;
   			}
@@ -117,11 +117,10 @@ public class ControlLogin {
                 
   		if (valid) {
   			session.setAttribute("usuario", usuario);
-                        if(empleado.getSupervisor()==1){
-                            return "menu_principal";
+                        if(empleadoSesion.getSupervisor()==1){
+                            return "menuPrincipalSupervisor";
                         }else{
-                            //PONER EL OTRO MENU
-                            return "menu_principal";
+                            return "menuPrincipalEmpleado";
                         }
   		} else {
   			FacesContext.getCurrentInstance().addMessage(

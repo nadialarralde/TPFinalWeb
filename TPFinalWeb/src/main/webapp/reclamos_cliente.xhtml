@@ -17,25 +17,18 @@
 		<h:inputText id="dni" value="#{cliente.dni}"></h:inputText>
 		<h:outputText value="&#160;" />
 		<h:outputText value="&#160;" />
-		<h:outputText value="Codigo de reclamo" />
-		<h:inputText id="codigo" value="#{reclamo.codigo}"></h:inputText>
 		<h:commandButton action="#{cliente_controller.listarReclamos(cliente.dni)}" value="Listar reclamos del cliente"></h:commandButton>
-		<h:commandButton action="#{cliente_controller.getHistorialReclamo(cliente.dni, reclamo.codigo)}" value="Listar historial del reclamo"></h:commandButton>
 	</h:form>
 	
-	<c:if test="#{!cliente_controller.getListaReclamosCliente().isEmpty()}">
-		<h:dataTable value="#{cliente_controller.getListaReclamosCliente()}" var="reclamos">
+	<c:if test="#{!cliente_controller.getListaReclamos().isEmpty()}">
+		<h:dataTable value="#{cliente_controller.getListaReclamos()}" var="reclamos">
 			<h:column>
 				<f:facet name="header">Codigo</f:facet>
-				<h:outputText value="#{reclamos.getCodigo()}"></h:outputText>
+                                <h:outputText value="#{reclamos.getIdReclamo()}"></h:outputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">Descripcion</f:facet>
 				<h:outputText value="#{reclamos.getDescripcion()}"></h:outputText>
-			</h:column>
-			<h:column>
-				<f:facet name="header">Fecha alta</f:facet>
-				<h:outputText value="#{reclamos.getFechaAltaReclamo()}"></h:outputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">Cliente</f:facet>
@@ -43,43 +36,23 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">Estado actual</f:facet>
-				<h:outputText value="#{reclamos.getEstadoActual().getNombre()}"></h:outputText>
+				<h:outputText value="#{reclamos.getHistorial().getEstado().getDescripcion()}"></h:outputText>
 			</h:column>
 			<h:column>
-				<f:facet name="header">Clasificacion</f:facet>
-				<h:outputText value="#{reclamos.getClasificacion().getClasifReclamo()}"></h:outputText>
+				<f:facet name="header">Urgencia</f:facet>
+				<h:outputText value="#{reclamos.getUrgencia()}"></h:outputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">Servicio</f:facet>
-				<h:outputText value="#{reclamos.getTipoServicio().getTipoServ()}"></h:outputText>
+				<h:outputText value="#{reclamos.getServicio().getDescripcion()}"></h:outputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">Tipo reclamo</f:facet>
-				<h:outputText value="#{reclamos.getTipoReclamo().getTipoReclamo()}"></h:outputText>
+				<h:outputText value="#{reclamos.getTipoReclamo().getDescripcion()}"></h:outputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">Empleado alta</f:facet>
-				<h:outputText value="#{reclamos.getEmpleado_alta().getNombre()}"></h:outputText>
-			</h:column>
-			<h:column>
-				<f:facet name="header">Empleado asignado</f:facet>
-				<h:outputText value="#{reclamos.getEmpleado_asignado().getNombre()}"></h:outputText>
-			</h:column>
-		</h:dataTable>
-	</c:if>
-	<c:if test="#{!cliente_controller.getListaHistorialReclamo().isEmpty()}">
-		<h:dataTable value="#{cliente_controller.getListaHistorialReclamo()}" var="historial">
-			<h:column>
-				<f:facet name="header">Id</f:facet>
-				<h:outputText value="#{historial.getId()}"></h:outputText>
-			</h:column>
-			<h:column>
-				<f:facet name="header">Fecha</f:facet>
-				<h:outputText value="#{historial.getFecha()}"></h:outputText>
-			</h:column>
-			<h:column>
-				<f:facet name="header">Estado</f:facet>
-				<h:outputText value="#{historial.getEstado().getNombre()}"></h:outputText>
+				<h:outputText value="#{reclamos.getEmpleadoRegistro().getNombre()}"></h:outputText>
 			</h:column>
 		</h:dataTable>
 	</c:if>

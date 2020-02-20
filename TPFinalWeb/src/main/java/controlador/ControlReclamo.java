@@ -11,16 +11,29 @@ import modelo.Empleado;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import modelo.Estado;
+import modelo.Sistema;
 
+@ManagedBean(name="reclamo_controller")
+@RequestScoped
 public class ControlReclamo {
     
     private ControlSistema controlSistema;
     private ReclamoJpaController jpaControl = new ReclamoJpaController();
     private String mensaje="";
+    private List<Reclamo> reclamosEmpleado= new ArrayList<>();
     
     public ControlReclamo(ControlSistema controlSistema){
         this.controlSistema = controlSistema;
+    }
+    
+    public ControlReclamo() {
+    	   Sistema sistema = new Sistema("2.0", "Sist. de Informacion de Telecomunicaciones S.A.");
+        this.controlSistema =  new ControlSistema(sistema);
     }
     
     public String nuevoReclamo(Cliente cliente, Servicio servicio, String descripcion,
@@ -111,16 +124,43 @@ public class ControlReclamo {
     }
         
     //Buscar reclamos pendientes de un empleado*********************************************************************
-        public List<Reclamo> reclamosPendientes(int dniEmpleado){
+        public void reclamosPendientes(String stringDniEmpleado){
+            int dniEmpleado= Integer.parseInt(stringDniEmpleado);
             int ultimoEmpleado;
+            boolean existeEmpleado=false;
             List<Reclamo> reclamosPendientes=new ArrayList<>();
             List<Reclamo>reclamos=jpaControl.reclamosOrdenadosFecha();
             for(Reclamo e:reclamos){
                 ultimoEmpleado=Integer.parseInt(e.getHistorial().getEmpleadosAsignados().get(e.getHistorial().getEmpleadosAsignados().size()-1).substring(2, 10));
                 if(dniEmpleado==ultimoEmpleado ){  /*&& !e.getHistorial().getEstado().getDescripcion().equalsIgnoreCase("finalizado")*/
+                    if(!existeEmpleado){
+                        existeEmpleado=true;
+                    }
                     reclamosPendientes.add(e);
                 }
             }
-            return reclamosPendientes;
+            if (!existeEmpleado) {
+    		FacesContext.getCurrentInstance().addMessage(
+  					null,
+  					new FacesMessage(FacesMessage.SEVERITY_WARN,
+  							"Empleado inexistente",
+  							"Ingrese el dni nuevamente")
+  			);
+                
+    	}else if (reclamosPendientes.isEmpty()) {
+    		FacesContext.getCurrentInstance().addMessage(
+  					null,
+  					new FacesMessage(FacesMessage.SEVERITY_WARN,
+  							"El empleado no posee reclamos",
+  							"")
+  			);
+                
+    	}else{
+                   this.reclamosEmpleado=reclamosPendientes;
+        }
+        }
+        
+        public List<Reclamo> getListaReclamos(){
+            return this.reclamosEmpleado;
         }
 }

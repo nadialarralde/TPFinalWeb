@@ -4,46 +4,74 @@ import controladorJPA.ClienteJpaController;
 import modelo.Cliente;
 import java.util.List;
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import modelo.Reclamo;
+import modelo.Sistema;
 
+@ManagedBean(name="cliente_controller")
+@RequestScoped
 public class ControlCliente {
     
     private ControlSistema controlSistema;
     private ClienteJpaController jpaControl = new ClienteJpaController();
     private String mensaje="";
+    private List<Reclamo> reclamosCliente= new ArrayList<>();
     
     public ControlCliente(ControlSistema controlSistema){
         this.controlSistema = controlSistema;
     }
+    
+    public ControlCliente() {
+    	   Sistema sistema = new Sistema("2.0", "Sist. de Informacion de Telecomunicaciones S.A.");
+        this.controlSistema =  new ControlSistema(sistema);
+    }
+    
     //Consulta de todos los reclamos de un cliente*********************************************************************
     
-    public List<Reclamo> listarReclamos(int dniCliente){
+    public void listarReclamos(String stringDniCliente){
+        int dniCliente= Integer.parseInt(stringDniCliente);
         //List<Integer> numerosReclamo=new ArrayList<>();
+        boolean existeCliente=false;
         List<Reclamo> lista=new ArrayList<>();
         List<Reclamo> reclamos=controlSistema.getmSistema().getReclamos();
         for(Reclamo e:reclamos) {
             if(e.getCliente().getDni() == dniCliente){
+                if(!existeCliente){
+                    existeCliente=true;
+                }
                 lista.add(e);
             }
         }
-
-        return lista;
+        
+        if (!existeCliente) {
+    		FacesContext.getCurrentInstance().addMessage(
+  					null,
+  					new FacesMessage(FacesMessage.SEVERITY_WARN,
+  							"Cliente inexistente",
+  							"Ingrese el dni nuevamente")
+  			);
+                
+    	}else if (lista.isEmpty()) {
+    		FacesContext.getCurrentInstance().addMessage(
+  					null,
+  					new FacesMessage(FacesMessage.SEVERITY_WARN,
+  							"El cliente no posee reclamos",
+  							"")
+  			);
+                
+    	}else{
+                   this.reclamosCliente=lista;
+        }
     }
     
-    //Enviar todos los datos de un reclamo*****************************************************************************
     
-    /* public List<Reclamo> datosReclamo(List<Integer> numerosReclamo){
-        List<Reclamo>datos=new ArrayList<>();
-        List<Reclamo> reclamos=controlSistema.getmSistema().getReclamos();
-        for(Integer a:numerosReclamo){
-            for(Reclamo e:reclamos) {
-                if(e.getIdReclamo()== a){
-                    datos.add(e);
-                }
-            }
-        }
-        return datos;
-     }*/
+    public List<Reclamo> getListaReclamos(){
+        return this.reclamosCliente;
+    }
+    
     
     //Recuperar instancia de Cliente***********************************************************************************
     
