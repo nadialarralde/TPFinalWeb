@@ -18,20 +18,21 @@ public class ControlCliente {
     //Consulta de todos los reclamos de un cliente*********************************************************************
     
     public List<Reclamo> listarReclamos(int dniCliente){
-        List<Integer> numerosReclamo=new ArrayList<>();
+        //List<Integer> numerosReclamo=new ArrayList<>();
+        List<Reclamo> lista=new ArrayList<>();
         List<Reclamo> reclamos=controlSistema.getmSistema().getReclamos();
         for(Reclamo e:reclamos) {
             if(e.getCliente().getDni() == dniCliente){
-                numerosReclamo.add(e.getIdReclamo());
+                lista.add(e);
             }
         }
-        List<Reclamo> lista=datosReclamo(numerosReclamo);
+
         return lista;
     }
     
     //Enviar todos los datos de un reclamo*****************************************************************************
     
-     public List<Reclamo> datosReclamo(List<Integer> numerosReclamo){
+    /* public List<Reclamo> datosReclamo(List<Integer> numerosReclamo){
         List<Reclamo>datos=new ArrayList<>();
         List<Reclamo> reclamos=controlSistema.getmSistema().getReclamos();
         for(Integer a:numerosReclamo){
@@ -42,7 +43,7 @@ public class ControlCliente {
             }
         }
         return datos;
-     }
+     }*/
     
     //Recuperar instancia de Cliente***********************************************************************************
     
