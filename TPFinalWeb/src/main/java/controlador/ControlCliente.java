@@ -17,7 +17,7 @@ public class ControlCliente {
     }
     //Consulta de todos los reclamos de un cliente*********************************************************************
     
-    private List<Integer> listarReclamos(int dniCliente){
+    public List<Reclamo> listarReclamos(int dniCliente){
         List<Integer> numerosReclamo=new ArrayList<>();
         List<Reclamo> reclamos=controlSistema.getmSistema().getReclamos();
         for(Reclamo e:reclamos) {
@@ -25,24 +25,20 @@ public class ControlCliente {
                 numerosReclamo.add(e.getIdReclamo());
             }
         }
-        return numerosReclamo;
+        List<Reclamo> lista=datosReclamo(numerosReclamo);
+        return lista;
     }
     
     //Enviar todos los datos de un reclamo*****************************************************************************
     
-     private List<String> datosReclamo(int numeroReclamo){
-        List<String>datos=new ArrayList<>();
+     public List<Reclamo> datosReclamo(List<Integer> numerosReclamo){
+        List<Reclamo>datos=new ArrayList<>();
         List<Reclamo> reclamos=controlSistema.getmSistema().getReclamos();
-        for(Reclamo e:reclamos) {
-            if(e.getIdReclamo()== numeroReclamo){
-                datos.add("Numero Reclamo:"+String.valueOf(numeroReclamo));
-                datos.add("Servicio:"+e.getServicio().getDescripcion());
-                datos.add("Descripcion:"+e.getDescripcion());
-                datos.add("urgencia:"+e.getUrgencia());
-                datos.add("Fecha:"+e.getFecha().toString());
-                datos.add("Empelado Registro:"+e.getEmpleadoRegistro().getNombre());
-                datos.add("Estado:"+e.getHistorial().getEstado().getDescripcion());
-                datos.add("Tipo Reclamo:"+e.getTipoReclamo().getDescripcion());
+        for(Integer a:numerosReclamo){
+            for(Reclamo e:reclamos) {
+                if(e.getIdReclamo()== a){
+                    datos.add(e);
+                }
             }
         }
         return datos;
