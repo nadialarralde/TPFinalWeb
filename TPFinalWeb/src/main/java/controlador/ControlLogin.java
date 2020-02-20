@@ -8,18 +8,29 @@ package controlador;
 import exception.Notificaciones;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import modelo.Empleado;
+import modelo.Sistema;
 
-/**
- *
- * @author gonza
- */
+@ManagedBean(name="login_controller")
+@SessionScoped
 public class ControlLogin {
     
     private ControlSistema controlSistema;
     
     public ControlLogin(ControlSistema controlSistema){
         this.controlSistema = controlSistema;
+    }
+    
+    public ControlLogin() {
+    	   Sistema sistema = new Sistema("2.0", "Sist. de Informacion de Telecomunicaciones S.A.");
+        this.controlSistema =  new ControlSistema(sistema);
+		
     }
     
     /*Retorna la instancia del empleado que se esta loggeando*/
@@ -79,4 +90,67 @@ public class ControlLogin {
             
         return empleadoSesion;
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //validate login
+  	public String validarLoginAdministrador(String usuario, String clave) {
+  		boolean valid = false;
+  		HttpSession session = null;
+  		for (Empleado empleado : this.controlSistema.getmSistema().getEmpleados()) {
+  			if (empleado.getUsuario().equals(usuario)) {
+  				if (!empleado.getContraseña().equals(clave)) {
+  					break;
+  				}
+  				session = getSession();
+  				valid = true;
+  			}
+  		}
+  		
+  		if (valid) {
+  			session.setAttribute("usuario", usuario);
+  			return "menu_principal";
+  		} else {
+  			FacesContext.getCurrentInstance().addMessage(
+  					null,
+  					new FacesMessage(FacesMessage.SEVERITY_WARN,
+  							"Incorrect Username and Passowrd",
+  							"Please enter correct username and Password")
+  					);
+  			return "login";
+  		}
+  	}
+    
+    
+    public static HttpSession getSession() {
+		return (HttpSession) FacesContext.getCurrentInstance()
+				.getExternalContext().getSession(false);
+	}
+
+	public static HttpServletRequest getRequest() {
+		return (HttpServletRequest) FacesContext.getCurrentInstance()
+				.getExternalContext().getRequest();
+	}
+
+	public static String getUserName() {
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+				.getExternalContext().getSession(false);
+		return session.getAttribute("username").toString();
+	}
+
+	public static String getUserId() {
+		HttpSession session = getSession();
+		if (session != null)
+			return (String) session.getAttribute("userid");
+		else
+			return null;
+	} 
+    
+    
 }

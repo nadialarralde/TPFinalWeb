@@ -3,6 +3,8 @@ package controlador;
 import exception.Notificaciones;
 //import java.util.ArrayList;
 import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -10,6 +12,9 @@ import javax.swing.JOptionPane;
 import modelo.*;
 import vista.FramePrincipal;
 
+
+@ManagedBean
+@SessionScoped
 public class ControlSistema {
     
     /*Instancias de modelo y vista del sistema*/
@@ -59,7 +64,7 @@ public class ControlSistema {
     public List<String> getListaTipoReclamo(){
         return this.controlTipoReclamo.getListaTiposReclamos();
     }
-    
+
     
     public void controlLogin(String usuario, String clave, FramePrincipal vistaPrincipal)throws Notificaciones{
         this.vPrincipal = vistaPrincipal;

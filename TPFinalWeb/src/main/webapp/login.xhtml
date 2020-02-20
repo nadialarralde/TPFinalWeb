@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<meta charset="utf-8" name="viewport"
+		content="width=device-width, initial-scale=1"
+		http-equiv="X-UA-Conpatible" />
+	<title>Inicio de sesion</title>
+</h:head>
+<h:body>
+
+
+<h:form>
+		<h3>Iniciar sesion</h3>
+		<h:outputText value="Usuario" />
+		<h:inputText id="usuario" value="#{empleado.usuario}"></h:inputText>
+		<h:message for="usuario"></h:message>
+		<br></br><br></br>
+		
+		<h:outputText value="Password" />
+		<h:inputSecret id="clave" value="#{empleado.contraseña}"></h:inputSecret>
+		<h:message for="clave"></h:message>
+		<br></br><br></br>
+		
+		<h:commandButton action="#{login_controller.validarLoginAdministrador(empleado.usuario, empleado.contraseña)}"
+			value="Login"></h:commandButton>
+	</h:form>
+</h:body>
+</html>
