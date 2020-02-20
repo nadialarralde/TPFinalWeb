@@ -111,7 +111,7 @@ public class ControlReclamo {
     }
         
     //Buscar reclamos pendientes de un empleado*********************************************************************
-        public List<String> reclamosPendientes(int dniEmpleado){
+        public List<Reclamo> reclamosPendientes(int dniEmpleado){
             int ultimoEmpleado;
             List<Reclamo> reclamosPendientes=new ArrayList<>();
             List<Reclamo>reclamos=jpaControl.reclamosOrdenadosFecha();
