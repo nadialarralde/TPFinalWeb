@@ -48,7 +48,7 @@ public class ControlCliente {
         
         if (!existeCliente) {
     		FacesContext.getCurrentInstance().addMessage(
-  					null,
+  					"form:dni",
   					new FacesMessage(FacesMessage.SEVERITY_WARN,
   							"Cliente inexistente",
   							"Ingrese el dni nuevamente")

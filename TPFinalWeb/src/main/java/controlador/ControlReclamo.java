@@ -141,7 +141,7 @@ public class ControlReclamo {
             }
             if (!existeEmpleado) {
     		FacesContext.getCurrentInstance().addMessage(
-  					null,
+  					"form:dni",
   					new FacesMessage(FacesMessage.SEVERITY_WARN,
   							"Empleado inexistente",
   							"Ingrese el dni nuevamente")

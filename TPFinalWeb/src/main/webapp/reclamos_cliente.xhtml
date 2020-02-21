@@ -11,12 +11,14 @@
 	<title>Reclamos de clientes</title>
 </h:head>
 <h:body>
-	<h:form>
+	<h:form id="form">
 		<h3>Buscar reclamos de un cliente</h3>
 		<h:outputText value="DNI" />
 		<h:inputText id="dni" value="#{cliente.dni}"></h:inputText>
+                <h:message for="dni"></h:message>
 		<h:outputText value="&#160;" />
 		<h:outputText value="&#160;" />
+                <h:message for=""></h:message>
 		<h:commandButton action="#{cliente_controller.listarReclamos(cliente.dni)}" value="Listar reclamos del cliente"></h:commandButton>
 	</h:form>
 	
