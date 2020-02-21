@@ -17,10 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import modelo.Estado;
 
-/**
- *
- * @author gonza
- */
+
 public class EstadoJpaController implements Serializable {
 
     public EstadoJpaController(EntityManagerFactory emf) {
@@ -93,30 +90,6 @@ public class EstadoJpaController implements Serializable {
         }
     }
 
-    public List<Estado> findEstadoEntities() {
-        return findEstadoEntities(true, -1, -1);
-    }
-
-    public List<Estado> findEstadoEntities(int maxResults, int firstResult) {
-        return findEstadoEntities(false, maxResults, firstResult);
-    }
-
-    private List<Estado> findEstadoEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Estado.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
     public Estado findEstado(int id) {
         EntityManager em = getEntityManager();
         try {
@@ -125,18 +98,4 @@ public class EstadoJpaController implements Serializable {
             em.close();
         }
     }
-
-    public int getEstadoCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Estado> rt = cq.from(Estado.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-    }
-    
 }

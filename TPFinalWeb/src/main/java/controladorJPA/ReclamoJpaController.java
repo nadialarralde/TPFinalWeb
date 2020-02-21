@@ -92,48 +92,10 @@ public class ReclamoJpaController implements Serializable {
             }
         }
     }
-
-    public List<Reclamo> findReclamoEntities() {
-        return findReclamoEntities(true, -1, -1);
-    }
-
-    public List<Reclamo> findReclamoEntities(int maxResults, int firstResult) {
-        return findReclamoEntities(false, maxResults, firstResult);
-    }
-
-    private List<Reclamo> findReclamoEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Reclamo.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
     public Reclamo findReclamo(int id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Reclamo.class, id);
-        } finally {
-            em.close();
-        }
-    }
-
-    public int getReclamoCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Reclamo> rt = cq.from(Reclamo.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
         } finally {
             em.close();
         }

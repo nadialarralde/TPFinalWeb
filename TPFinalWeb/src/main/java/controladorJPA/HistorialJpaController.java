@@ -17,10 +17,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import modelo.Historial;
 
-/**
- *
- * @author gonza
- */
 public class HistorialJpaController implements Serializable {
 
     public HistorialJpaController(EntityManagerFactory emf) {
@@ -93,30 +89,6 @@ public class HistorialJpaController implements Serializable {
         }
     }
 
-    public List<Historial> findHistorialEntities() {
-        return findHistorialEntities(true, -1, -1);
-    }
-
-    public List<Historial> findHistorialEntities(int maxResults, int firstResult) {
-        return findHistorialEntities(false, maxResults, firstResult);
-    }
-
-    private List<Historial> findHistorialEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Historial.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
     public Historial findHistorial(int id) {
         EntityManager em = getEntityManager();
         try {
@@ -125,18 +97,4 @@ public class HistorialJpaController implements Serializable {
             em.close();
         }
     }
-
-    public int getHistorialCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Historial> rt = cq.from(Historial.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-    }
-    
 }

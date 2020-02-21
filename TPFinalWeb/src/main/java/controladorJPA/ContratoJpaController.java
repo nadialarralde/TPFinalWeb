@@ -18,10 +18,7 @@ import javax.persistence.criteria.Root;
 import modelo.Cliente;
 import modelo.Contrato;
 
-/**
- *
- * @author gonza
- */
+
 public class ContratoJpaController implements Serializable {
 
     public ContratoJpaController(EntityManagerFactory emf) {
@@ -133,30 +130,7 @@ public class ContratoJpaController implements Serializable {
         }
     }
 
-    public List<Contrato> findContratoEntities() {
-        return findContratoEntities(true, -1, -1);
-    }
-
-    public List<Contrato> findContratoEntities(int maxResults, int firstResult) {
-        return findContratoEntities(false, maxResults, firstResult);
-    }
-
-    private List<Contrato> findContratoEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Contrato.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
+ 
     public Contrato findContrato(int id) {
         EntityManager em = getEntityManager();
         try {
@@ -166,17 +140,4 @@ public class ContratoJpaController implements Serializable {
         }
     }
 
-    public int getContratoCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Contrato> rt = cq.from(Contrato.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-    }
-    
 }

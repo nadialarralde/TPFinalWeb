@@ -17,10 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import modelo.Servicio;
 
-/**
- *
- * @author gonza
- */
+
 public class ServicioJpaController implements Serializable {
 
     public ServicioJpaController(EntityManagerFactory emf) {
@@ -93,30 +90,6 @@ public class ServicioJpaController implements Serializable {
         }
     }
 
-    public List<Servicio> findServicioEntities() {
-        return findServicioEntities(true, -1, -1);
-    }
-
-    public List<Servicio> findServicioEntities(int maxResults, int firstResult) {
-        return findServicioEntities(false, maxResults, firstResult);
-    }
-
-    private List<Servicio> findServicioEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Servicio.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
     public Servicio findServicio(int id) {
         EntityManager em = getEntityManager();
         try {
@@ -125,18 +98,4 @@ public class ServicioJpaController implements Serializable {
             em.close();
         }
     }
-
-    public int getServicioCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Servicio> rt = cq.from(Servicio.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-    }
-    
 }
